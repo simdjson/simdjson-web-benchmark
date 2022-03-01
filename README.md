@@ -1,5 +1,5 @@
-Clutter Benchmark
-=================
+JSON Web Benchmark
+==================
 
 This benchmark is designed to benchmark the speed of various JSON parsers when handling web requests.
 
