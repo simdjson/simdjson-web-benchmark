@@ -1,8 +1,8 @@
+# syntax=docker/dockerfile:1.3
 # See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.217.4/containers/cpp/.devcontainer/base.Dockerfile
 
 # [Choice] Debian / Ubuntu version (use Debian 11, Ubuntu 18.04/21.04 on local arm64/Apple Silicon): debian-11, debian-10, ubuntu-21.04, ubuntu-20.04, ubuntu-18.04
 ARG VARIANT="bullseye"
-ARG COMPILER="clang13"
 
 #
 # Basic dev tools and Drogon dependencies
@@ -29,6 +29,9 @@ FROM base AS clang11
 RUN export DEBIAN_FRONTEND=noninteractive             \
     && apt-get update                                 \
     && apt-get -y install clang lldb llvm
+# Build the repository
+RUN --mount=type=bind,target=/code,source=. cmake -S /code -B /build && cmake --build /build
+WORKDIR /code
 
 #
 # Clang 13
@@ -41,3 +44,6 @@ RUN echo "deb-src http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-13 main"
 RUN export DEBIAN_FRONTEND=noninteractive             \
  && apt-get update                                    \
  && apt-get -y install clang-13 llvm-13 lldb-13
+# Build the repository
+RUN --mount=type=bind,target=/code,source=. cmake -S /code -B /build && cmake --build /build
+WORKDIR /code
